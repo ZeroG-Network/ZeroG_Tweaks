@@ -1,6 +1,5 @@
 {
-    "item.zerogtweaks.ausioum_item": "Ausioum Ingot",
-    "block.zerogtweaks.ausioum_block": "Ausioum Block",
-    "itemGroup.zerogtweaks_tab": "ZeroG Tweaks"
-  }
-  
+  "block.zerogtweaks.ausioum_block": "Ausioum Block",
+  "item.zerogtweaks.ausioum_item": "Ausioum",
+  "itemGroup.zerogtweaks": "ZeroG Tweaks"
+}
