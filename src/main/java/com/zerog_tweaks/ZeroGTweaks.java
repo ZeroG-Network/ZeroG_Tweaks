@@ -1,41 +1,56 @@
 package com.zerog_tweaks;
 
-import dev.neoforged.runtime.api.Registry;
-import dev.neoforged.runtime.api.NeoMod;
-import dev.neoforged.runtime.api.events.lifecycle.ModLifecycleEvent;
-import dev.neoforged.runtime.api.resources.ResourceKey;
-import dev.neoforged.runtime.api.world.item.CreativeTab;
-import dev.neoforged.runtime.api.world.item.Item;
-import dev.neoforged.runtime.api.world.item.Block;
-import dev.neoforged.runtime.impl.resources.ResourceLocation;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
-import java.util.function.Supplier;
-
-@NeoMod(modId = ZeroGTweaks.MODID)
+@Mod(ZeroGTweaks.MODID)
 public class ZeroGTweaks {
     public static final String MODID = "zerogtweaks";
 
-    // Registries
-    public static final Registry<Block> BLOCKS = Registry.create(new ResourceLocation(MODID, "blocks"));
-    public static final Registry<Item> ITEMS = Registry.create(new ResourceLocation(MODID, "items"));
+    // Deferred Registers for NeoForge
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
     // Block and Item Definitions
-    public static final Supplier<Block> AUSIOUM_BLOCK = BLOCKS.register("ausioum_block", () -> new Block(Block.Properties.of(Material.STONE)));
-    public static final Supplier<Item> AUSIOUM_BLOCK_ITEM = ITEMS.register("ausioum_block", () -> new Item(new Item.Properties().tab(ZeroGTweaks.CREATIVE_TAB)));
-    public static final Supplier<Item> AUSIOUM_ITEM = ITEMS.register("ausioum_item", () -> new Item(new Item.Properties().tab(ZeroGTweaks.CREATIVE_TAB)));
+    public static final DeferredBlock<Block> AUSIOUM_BLOCK = BLOCKS.registerSimpleBlock("ausioum_block",
+            BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
+
+    public static final DeferredItem<BlockItem> AUSIOUM_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("ausioum_block", 
+            AUSIOUM_BLOCK);
+
+    public static final DeferredItem<Item> AUSIOUM_ITEM = ITEMS.registerSimpleItem("ausioum_item", 
+            new Item.Properties());
 
     // Creative Tab
-    public static final CreativeTab CREATIVE_TAB = CreativeTab.create(new ResourceLocation(MODID, "zerogtweaks_tab"),
-        () -> AUSIOUM_ITEM.get().getDefaultInstance());
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> CREATIVE_TAB = CREATIVE_MODE_TABS.register("zerogtweaks_tab", 
+        () -> CreativeModeTab.builder()
+            .title(Component.translatable("itemGroup." + MODID))
+            .withTabsBefore(CreativeModeTabs.COMBAT)
+            .icon(() -> AUSIOUM_ITEM.get().getDefaultInstance())
+            .displayItems((parameters, output) -> {
+                output.accept(AUSIOUM_ITEM.get());
+                output.accept(AUSIOUM_BLOCK_ITEM.get());
+            }).build());
 
-    // Lifecycle Event Handling
-    public ZeroGTweaks() {
-        ModLifecycleEvent.INITIALIZE.register(this::onInitialize);
-    }
-
-    private void onInitialize() {
-        BLOCKS.registerAll();
-        ITEMS.registerAll();
-        // Additional initialization logic if needed
+    public ZeroGTweaks(IEventBus modEventBus) {
+        // Register to the mod event bus
+        BLOCKS.register(modEventBus);
+        ITEMS.register(modEventBus);
+        CREATIVE_MODE_TABS.register(modEventBus);
     }
 }
