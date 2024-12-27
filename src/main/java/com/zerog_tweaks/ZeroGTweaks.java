@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -30,27 +31,34 @@ public class ZeroGTweaks {
     public static final DeferredBlock<Block> AUSIOUM_BLOCK = BLOCKS.registerSimpleBlock("ausioum_block",
             BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
 
-    public static final DeferredItem<BlockItem> AUSIOUM_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("ausioum_block", 
+    public static final DeferredItem<BlockItem> AUSIOUM_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("ausioum_block",
             AUSIOUM_BLOCK);
 
-    public static final DeferredItem<Item> AUSIOUM_ITEM = ITEMS.registerSimpleItem("ausioum_item", 
+    public static final DeferredItem<Item> AUSIOUM_ITEM = ITEMS.registerSimpleItem("ausioum_item",
             new Item.Properties());
 
     // Creative Tab
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> CREATIVE_TAB = CREATIVE_MODE_TABS.register("zerogtweaks_tab", 
-        () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup." + MODID))
-            .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> AUSIOUM_ITEM.get().getDefaultInstance())
-            .displayItems((parameters, output) -> {
-                output.accept(AUSIOUM_ITEM.get());
-                output.accept(AUSIOUM_BLOCK_ITEM.get());
-            }).build());
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> CREATIVE_TAB = CREATIVE_MODE_TABS.register("zerogtweaks_tab",
+            () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.zerogtweaks"))
+                    .withTabsBefore(CreativeModeTabs.COMBAT)
+                    .icon(() -> new ItemStack(AUSIOUM_ITEM.get())) // Using ItemStack for the icon
+                    .displayItems((parameters, output) -> {
+                        output.accept(AUSIOUM_ITEM.get());
+                        output.accept(AUSIOUM_BLOCK_ITEM.get());
+                    }).build());
 
     public ZeroGTweaks(IEventBus modEventBus) {
         // Register to the mod event bus
         BLOCKS.register(modEventBus);
         ITEMS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
+
+        // Add client setup listener
+        modEventBus.addListener(this::clientSetup);
+    }
+
+    private void clientSetup(final FMLClientSetupEvent event) {
+        // Client-side setup code if needed
     }
 }
