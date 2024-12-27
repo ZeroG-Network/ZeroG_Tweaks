@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "zerogtweaks:block/ausioum_ore"
+  }
+}

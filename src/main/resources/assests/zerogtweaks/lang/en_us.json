@@ -1,5 +1,9 @@
 {
+  "block.zerogtweaks.ausioum_ore": "Ausioum Ore",
   "block.zerogtweaks.ausioum_block": "Ausioum Block",
   "item.zerogtweaks.ausioum_item": "Ausioum",
+  "item.zerogtweaks.raw_ausioum": "Raw Ausioum",
+  "item.zerogtweaks.ausioum_nugget": "Ausioum Nugget",
+  "item.zerogtweaks.ausioum_powder": "Ausioum Powder",
   "itemGroup.zerogtweaks": "ZeroG Tweaks"
 }

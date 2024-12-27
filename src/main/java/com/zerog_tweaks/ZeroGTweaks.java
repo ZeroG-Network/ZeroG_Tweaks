@@ -27,14 +27,30 @@ public class ZeroGTweaks {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
-    // Block and Item Definitions
+    // Block Definitions
+    public static final DeferredBlock<Block> AUSIOUM_ORE = BLOCKS.registerSimpleBlock("ausioum_ore",
+            BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
+
     public static final DeferredBlock<Block> AUSIOUM_BLOCK = BLOCKS.registerSimpleBlock("ausioum_block",
             BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
+
+    // Item Definitions
+    public static final DeferredItem<BlockItem> AUSIOUM_ORE_ITEM = ITEMS.registerSimpleBlockItem("ausioum_ore",
+            AUSIOUM_ORE);
 
     public static final DeferredItem<BlockItem> AUSIOUM_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("ausioum_block",
             AUSIOUM_BLOCK);
 
     public static final DeferredItem<Item> AUSIOUM_ITEM = ITEMS.registerSimpleItem("ausioum_item",
+            new Item.Properties());
+
+    public static final DeferredItem<Item> RAW_AUSIOUM = ITEMS.registerSimpleItem("raw_ausioum",
+            new Item.Properties());
+
+    public static final DeferredItem<Item> AUSIOUM_NUGGET = ITEMS.registerSimpleItem("ausioum_nugget",
+            new Item.Properties());
+
+    public static final DeferredItem<Item> AUSIOUM_POWDER = ITEMS.registerSimpleItem("ausioum_powder",
             new Item.Properties());
 
     // Creative Tab
@@ -45,7 +61,11 @@ public class ZeroGTweaks {
                     .icon(() -> new ItemStack(AUSIOUM_ITEM.get())) // Using ItemStack for the icon
                     .displayItems((parameters, output) -> {
                         output.accept(AUSIOUM_ITEM.get());
+                        output.accept(AUSIOUM_ORE_ITEM.get());
                         output.accept(AUSIOUM_BLOCK_ITEM.get());
+                        output.accept(RAW_AUSIOUM.get());
+                        output.accept(AUSIOUM_NUGGET.get());
+                        output.accept(AUSIOUM_POWDER.get());
                     }).build());
 
     public ZeroGTweaks(IEventBus modEventBus) {
