@@ -26,7 +26,6 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.DeferredRegister.Holder;
 
 @Mod(ZeroGTweaks.MODID)
 public class ZeroGTweaks {
@@ -39,21 +38,21 @@ public class ZeroGTweaks {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
     // Register Blocks, Items, and Tabs
-    public static final Holder<Block> AUSIOUM_BLOCK = BLOCKS.register("ausioum_block",
-        () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.STONE)));
-    public static final Holder<Item> AUSIOUM_BLOCK_ITEM = ITEMS.register("ausioum_block",
-        () -> new BlockItem(AUSIOUM_BLOCK.get(), new Item.Properties()));
-    public static final Holder<Item> AUSIOUM_ITEM = ITEMS.register("ausioum_item",
-        () -> new Item(new Item.Properties()));
+    public static final Block AUSIOUM_BLOCK = BLOCKS.register("ausioum_block",
+        () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.STONE))).get();
+    public static final Item AUSIOUM_BLOCK_ITEM = ITEMS.register("ausioum_block",
+        () -> new BlockItem(AUSIOUM_BLOCK, new Item.Properties())).get();
+    public static final Item AUSIOUM_ITEM = ITEMS.register("ausioum_item",
+        () -> new Item(new Item.Properties())).get();
 
-    public static final Holder<CreativeModeTab> ZEROG_TWEAKS_TAB = CREATIVE_MODE_TABS.register("zerogtweaks_tab",
+    public static final CreativeModeTab ZEROG_TWEAKS_TAB = CREATIVE_MODE_TABS.register("zerogtweaks_tab",
         () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.zerogtweaks_tab"))
-            .icon(() -> AUSIOUM_ITEM.get().getDefaultInstance())
+            .icon(() -> AUSIOUM_ITEM.getDefaultInstance())
             .displayItems((parameters, output) -> {
-                output.accept(AUSIOUM_ITEM.get());
-                output.accept(AUSIOUM_BLOCK_ITEM.get());
-            }).build());
+                output.accept(AUSIOUM_ITEM);
+                output.accept(AUSIOUM_BLOCK_ITEM);
+            }).build()).get();
 
     public ZeroGTweaks(IEventBus modEventBus, ModContainer modContainer) {
         // Register DeferredRegisters
@@ -76,10 +75,10 @@ public class ZeroGTweaks {
 
     private void addItemsToCreativeTabs(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-            event.accept(AUSIOUM_BLOCK_ITEM.get());
+            event.accept(AUSIOUM_BLOCK_ITEM);
         }
         if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
-            event.accept(AUSIOUM_ITEM.get());
+            event.accept(AUSIOUM_ITEM);
         }
     }
 
