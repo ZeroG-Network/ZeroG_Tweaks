@@ -25,9 +25,6 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 @Mod(ZeroGTweaks.MODID)
@@ -41,15 +38,17 @@ public class ZeroGTweaks {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
     // Block and Item Definitions
-    public static final DeferredBlock<Block> AUSIOUM_BLOCK = BLOCKS.register("ausioum_block", 
+    public static final DeferredRegister.BlockHolder<Block> AUSIOUM_BLOCK = BLOCKS.register("ausioum_block", 
         () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.STONE)));
-    public static final DeferredItem<BlockItem> AUSIOUM_BLOCK_ITEM = ITEMS.register("ausioum_block", 
+        
+    public static final DeferredRegister.ItemHolder<BlockItem> AUSIOUM_BLOCK_ITEM = ITEMS.register("ausioum_block", 
         () -> new BlockItem(AUSIOUM_BLOCK.get(), new Item.Properties()));
-    public static final DeferredItem<Item> AUSIOUM_ITEM = ITEMS.register("ausioum_item", 
+        
+    public static final DeferredRegister.ItemHolder<Item> AUSIOUM_ITEM = ITEMS.register("ausioum_item", 
         () -> new Item(new Item.Properties()));
 
     // Custom Creative Tab
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ZEROG_TWEAKS_TAB = CREATIVE_MODE_TABS.register("zerogtweaks_tab", 
+    public static final DeferredRegister.Holder<CreativeModeTab> ZEROG_TWEAKS_TAB = CREATIVE_MODE_TABS.register("zerogtweaks_tab", 
         () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.zerogtweaks_tab"))
             .withTabsBefore(CreativeModeTabs.COMBAT)
